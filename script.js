@@ -1,7 +1,11 @@
 /* ============ SETTINGS (edit these) ============ */
-const WHATSAPP_NUMBER = "+91 78772 08272";   // country code + number, no + or spaces
+const WHATSAPP_NUMBER = "+91 78772 08272";   // country code + number (spaces and + are fine)
 const GENERAL_MESSAGE = "Hi! I'm connecting for a reservation at The Glass Box.";
 const PHONE_NUMBER = "+91 79471 47478";     // the number the Call buttons dial (include + and country code)
+const PHONE_ITEM_LIMIT = 4;                 // on phones, how many dishes to show before the "Show all" button
+
+// WhatsApp links need digits only, so clean the number automatically
+const WA_DIGITS = WHATSAPP_NUMBER.replace(/\D/g, "");
 
 /* ============ MENU DATA (add / remove / rename freely) ============ */
 // Each category has an icon (used on the tab) and a list of [dish name, emoji].
@@ -77,17 +81,27 @@ function qtyControl(name) {
 const tabsBox  = document.getElementById("menu-tabs");
 const titleBox = document.getElementById("menu-title");
 const listBox  = document.getElementById("menu-list");
+const showAllBox = document.getElementById("show-all");
+
+let showAll = false;                                  // has the customer tapped "Show all"?
+const phoneQuery = matchMedia("(max-width: 600px)");  // true on phones
 
 function drawTabs() {
   tabsBox.innerHTML = Object.keys(menu).map(c =>
     `<button class="tab ${c === activeCategory ? "active" : ""}" data-cat="${c}">${menu[c].icon} ${c}</button>`).join("");
 }
 function slug(name) { return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }   // "Paneer Tikka" -> "paneer-tikka"
-function drawMenu(animate) {
+// animate = play the pop-in animation, fromIndex = first dish that should animate
+function drawMenu(animate, fromIndex = 0) {
   const cat = menu[activeCategory];
   titleBox.textContent = activeCategory;
-  listBox.innerHTML = cat.items.map(([name, emoji], i) => `
-    <div class="menu-item glow-card" style="${animate ? `animation-delay:${i * 40}ms` : "animation:none"}">
+
+  // On phones, show only the first few dishes until "Show all" is tapped
+  const isLong = phoneQuery.matches && cat.items.length > PHONE_ITEM_LIMIT;
+  const visible = isLong && !showAll ? cat.items.slice(0, PHONE_ITEM_LIMIT) : cat.items;
+
+  listBox.innerHTML = visible.map(([name, emoji], i) => `
+    <div class="menu-item glow-card" style="${animate && i >= fromIndex ? `animation-delay:${(i - fromIndex) * 40}ms` : "animation:none"}">
       <div class="thumb">
         <span class="emoji">${emoji}</span>
         <img src="images/menu/${slug(name)}.jpg" alt="${name}" title="Photo file: images/menu/${slug(name)}.jpg" loading="lazy" onerror="this.remove()">
@@ -95,11 +109,22 @@ function drawMenu(animate) {
       <div class="name">${name}</div>
       ${qtyControl(name)}
     </div>`).join("");
+
+  // the button under the list
+  showAllBox.innerHTML = !isLong ? "" : showAll
+    ? `<button class="btn btn-ghost" data-act="less">Show less ↑</button>`
+    : `<button class="btn btn-ghost" data-act="more">Show all ${cat.items.length} items ↓</button>`;
 }
 tabsBox.addEventListener("click", e => {
   const t = e.target.closest(".tab"); if (!t) return;
-  activeCategory = t.dataset.cat; drawTabs(); drawMenu(true);
+  activeCategory = t.dataset.cat; showAll = false; drawTabs(); drawMenu(true);   // new category starts collapsed
 });
+showAllBox.addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  if (b.dataset.act === "more") { showAll = true; drawMenu(true, PHONE_ITEM_LIMIT); }   // only the newly revealed dishes animate
+  else { showAll = false; drawMenu(false); document.getElementById("menu").scrollIntoView(); }
+});
+phoneQuery.addEventListener("change", () => drawMenu(false));   // redraw if the screen size changes (e.g. rotating the phone)
 listBox.addEventListener("click", handleQtyClick);
 
 /* ============ DRAW THE CART ============ */
@@ -152,15 +177,15 @@ document.getElementById("reserve-form").addEventListener("submit", e => {
   msg += `Guests: ${guests}\nDate: ${date}\nTime: ${time}\n\nOrder:\n`;
   msg += Object.entries(cart).map(([item, qty]) => `• ${qty} x ${item}`).join("\n");
 
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+  window.open(`https://wa.me/${WA_DIGITS}?text=${encodeURIComponent(msg)}`, "_blank");
 });
 
 /* ============ NORMAL WHATSAPP BUTTONS ============ */
 document.querySelectorAll(".whatsapp-link").forEach(a =>
-  a.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(GENERAL_MESSAGE)}`);
+  a.href = `https://wa.me/${WA_DIGITS}?text=${encodeURIComponent(GENERAL_MESSAGE)}`);
 
 /* ============ CALL BUTTONS (opens the phone's dialer with the number filled in) ============ */
-document.querySelectorAll(".call-link").forEach(a => a.href = "tel:" + PHONE_NUMBER);
+document.querySelectorAll(".call-link").forEach(a => a.href = "tel:" + PHONE_NUMBER.replace(/\s/g, ""));
 
 /* ============ HERO DECORATIONS (stars, clouds, fireflies, string lights) ============ */
 const sky = document.getElementById("sky");

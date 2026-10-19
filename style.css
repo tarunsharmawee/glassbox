@@ -185,3 +185,7 @@ form input:focus { outline: 0; border-color: var(--neon); box-shadow: var(--glow
 
 /* respect people who prefer less motion */
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } .reveal { opacity: 1; transform: none; } }
+
+/* "Show all" button under the menu (only appears on phones) */
+.show-all { text-align: center; margin-top: 24px; }
+.show-all .btn { min-width: 230px; }

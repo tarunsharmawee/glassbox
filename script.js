@@ -1,7 +1,7 @@
 /* ============ SETTINGS (edit these) ============ */
-const WHATSAPP_NUMBER = "919999999999";   // country code + number, no + or spaces
+const WHATSAPP_NUMBER = "+91 7947103638";   // country code + number, no + or spaces
 const GENERAL_MESSAGE = "Hi! I'm connecting for a reservation at The Glass Box.";
-const PHONE_NUMBER = "+919999999999";     // the number the Call buttons dial (include + and country code)
+const PHONE_NUMBER = "+91 7947103638";     // the number the Call buttons dial (include + and country code)
 
 /* ============ MENU DATA (add / remove / rename freely) ============ */
 // Each category has an icon (used on the tab) and a list of [dish name, emoji].

@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<script>try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -24,6 +25,11 @@
     <a href="#menu">Menu</a>
     <a href="#reviews" class="hide-mobile">Reviews</a>
     <a href="#location">Location</a>
+    <!-- Day / night switch -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Switch to night mode" title="Switch to night mode">
+      <svg class="icon moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="currentColor"/></svg>
+      <svg class="icon sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -42,45 +48,45 @@
         <span class="chip">🍽️ Unlimited main course</span>
         <span class="chip">🌃 100ft city view</span>
       </div>
-      <a class="btn btn-neon" href="#menu">Pick your food</a>
+      <a class="btn btn-primary" href="#menu">Pick your food</a>
       <a class="btn btn-ghost whatsapp-link" href="#" target="_blank">Reserve on WhatsApp</a>
     </div>
 
     <!-- Crane illustration (SVG) -->
     <svg class="crane" viewBox="0 0 430 460" xmlns="http://www.w3.org/2000/svg" aria-label="Crane lifting a dining table">
       <defs>
-        <radialGradient id="warm"><stop offset="0" stop-color="#ffd23f" stop-opacity=".55"/><stop offset="1" stop-color="#ffd23f" stop-opacity="0"/></radialGradient>
+        <radialGradient id="warm"><stop offset="0" style="stop-color:var(--glow-stop);stop-opacity:var(--glow-op)"/><stop offset="1" style="stop-color:var(--glow-stop);stop-opacity:0"/></radialGradient>
       </defs>
       <!-- skyline -->
-      <g fill="#0d1535">
+      <g style="fill:var(--skyline)">
         <rect x="0" y="400" width="60" height="60"/><rect x="70" y="380" width="50" height="80"/>
         <rect x="130" y="410" width="70" height="50"/><rect x="300" y="390" width="60" height="70"/>
         <rect x="370" y="405" width="60" height="55"/>
       </g>
       <!-- tiny glowing windows -->
-      <g fill="#ffd23f" opacity=".7"><rect x="80" y="395" width="5" height="5"/><rect x="100" y="410" width="5" height="5"/><rect x="310" y="405" width="5" height="5"/><rect x="380" y="420" width="5" height="5"/></g>
+      <g style="fill:var(--windows)" opacity=".95"><rect x="80" y="395" width="5" height="5"/><rect x="100" y="410" width="5" height="5"/><rect x="310" y="405" width="5" height="5"/><rect x="380" y="420" width="5" height="5"/></g>
       <!-- crane tower + arm -->
-      <g stroke="#ffd23f" stroke-width="3" fill="none">
+      <g style="stroke:var(--crane)" stroke-width="3" fill="none">
         <rect x="330" y="70" width="26" height="390"/>
         <path d="M330 110 L356 150 M356 110 L330 150 M330 150 L356 190 M356 150 L330 190 M330 190 L356 230 M356 190 L330 230 M330 230 L356 270 M356 230 L330 270 M330 270 L356 310 M356 270 L330 310 M330 310 L356 350 M356 310 L330 350 M330 350 L356 390 M356 350 L330 390"/>
         <path d="M60 70 L400 70 M60 70 L343 40 L400 70 M343 40 L343 70"/>
-        <rect x="370" y="70" width="30" height="22" fill="#ffd23f"/>
+        <rect style="fill:var(--crane)" x="370" y="70" width="30" height="22"/>
       </g>
       <circle class="blink" cx="343" cy="36" r="5" fill="#ff4d4d"/>   <!-- red warning light -->
       <!-- swinging table -->
       <g class="swing">
-        <line x1="215" y1="70" x2="215" y2="250" stroke="#ffd23f" stroke-width="3"/>
-        <path d="M215 250 L130 330 M215 250 L300 330" stroke="#ffd23f" stroke-width="2"/>
+        <line style="stroke:var(--crane)" x1="215" y1="70" x2="215" y2="250" stroke-width="3"/>
+        <path style="stroke:var(--crane)" d="M215 250 L130 330 M215 250 L300 330" stroke-width="2"/>
         <circle cx="215" cy="310" r="120" fill="url(#warm)"/>   <!-- warm glow around the table -->
-        <rect x="110" y="330" width="210" height="14" rx="4" fill="#2f8f5a" stroke="#ffd23f" stroke-width="2"/>
-        <rect x="165" y="312" width="100" height="8" fill="#eef1ff"/>
-        <rect x="212" y="320" width="6" height="10" fill="#eef1ff"/>
-        <circle cx="140" cy="292" r="10" fill="#ffd23f"/><rect x="130" y="302" width="20" height="28" rx="6" fill="#ffd23f"/>
-        <circle cx="290" cy="292" r="10" fill="#ff9eb5"/><rect x="280" y="302" width="20" height="28" rx="6" fill="#ff9eb5"/>
-        <circle class="blink" cx="215" cy="304" r="5" fill="#ffd23f"/>
-        <path d="M110 330 L110 295 M320 330 L320 295 M110 295 L125 295 M320 295 L305 295" stroke="#ffd23f" stroke-width="2"/>
+        <rect style="fill:var(--platform);stroke:var(--crane)" x="110" y="330" width="210" height="14" rx="4" stroke-width="2"/>
+        <rect style="fill:var(--tabletop)" x="165" y="312" width="100" height="8"/>
+        <rect style="fill:var(--tabletop)" x="212" y="320" width="6" height="10"/>
+        <circle style="fill:var(--diner1)" cx="140" cy="292" r="10"/><rect style="fill:var(--diner1)" x="130" y="302" width="20" height="28" rx="6"/>
+        <circle style="fill:var(--diner2)" cx="290" cy="292" r="10"/><rect style="fill:var(--diner2)" x="280" y="302" width="20" height="28" rx="6"/>
+        <circle style="fill:var(--candle)" class="blink" cx="215" cy="304" r="5"/>
+        <path style="stroke:var(--crane)" d="M110 330 L110 295 M320 330 L320 295 M110 295 L125 295 M320 295 L305 295" stroke-width="2"/>
       </g>
-      <g stroke="#aeb7dd" stroke-width="1.5" stroke-dasharray="5 4" fill="#aeb7dd" font-size="14">
+      <g style="fill:var(--marker);stroke:var(--marker)" stroke-width="1.5" stroke-dasharray="5 4" font-size="14">
         <line x1="30" y1="344" x2="30" y2="440"/>
         <text x="40" y="400" stroke="none">100 ft</text>
       </g>
@@ -173,7 +179,7 @@
       <div>
         <p>📍Vinayak Sarovar, T-Point, A-101, 200ft. Road, near Patrakar Colony Road, Golyawas, Jaipur, Rajasthan 302020</p>
         <p>🕒 open from 9AM to 11PM</p>
-        <a class="btn btn-neon" href="https://maps.app.goo.gl/ZsYu3H6U1db2YPRn7" target="_blank">Open in Google Maps</a>
+        <a class="btn btn-primary" href="https://maps.app.goo.gl/ZsYu3H6U1db2YPRn7" target="_blank">Open in Google Maps</a>
         <a class="btn btn-ghost whatsapp-link" href="#" target="_blank">Reserve on WhatsApp</a>
       </div>
       <iframe src="https://maps.google.com/maps?q=26.8435629,75.7449375&z=16&output=embed" loading="lazy" title="Map"></iframe>
@@ -213,7 +219,7 @@
     <div class="drawer-head"><h3>Your Cart</h3><button class="close" id="close-1">✕</button></div>
     <div class="cart-items" id="cart-items"></div>
     <p class="note">This is a pre-order list. The restaurant will confirm everything with you on WhatsApp.</p>
-    <button class="btn btn-neon" id="checkout-btn">Checkout & pick date / time</button>
+    <button class="btn btn-primary" id="checkout-btn">Checkout & pick date / time</button>
   </div>
 
   <!-- View 2: reservation details -->

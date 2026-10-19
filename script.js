@@ -205,7 +205,7 @@ for (let i = 0; i < 14; i++) {                            // fireflies
   f.style.cssText = `left:${Math.random() * 100}%;top:${50 + Math.random() * 45}%;animation-delay:${Math.random() * 9}s;animation-duration:${7 + Math.random() * 6}s`;
   sky.appendChild(f);
 }
-const bulbColors = ["#ffd23f", "#ff9eb5", "#7fd6ff", "#9dffb0"];
+const bulbColors = ["#f5b942", "#f28fa8", "#6fc3e8", "#7fd1a5"];
 const lights = document.getElementById("lights");
 for (let i = 0; i < 16; i++) {                            // string lights
   const b = document.createElement("span");
@@ -269,6 +269,25 @@ slider.addEventListener("touchend", e => {
 
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) startAuto();
 renderSlider();
+
+/* ============ DAY / NIGHT THEME ============ */
+const DEFAULT_THEME = "light";                 // what first-time visitors see: "light" (day) or "dark" (night)
+const root = document.documentElement;
+const themeBtn = document.getElementById("theme-toggle");
+
+function setTheme(theme, save) {
+  root.dataset.theme = theme;                  // CSS reads this: :root[data-theme="dark"] { ... }
+  const next = theme === "dark" ? "day" : "night";
+  themeBtn.title = themeBtn.ariaLabel = `Switch to ${next} mode`;
+  if (save) { try { localStorage.setItem("theme", theme); } catch (e) {} }   // remember their choice
+}
+setTheme(root.dataset.theme || DEFAULT_THEME, false);
+
+themeBtn.onclick = () => {
+  root.classList.add("theme-fade");            // makes the colour change smooth
+  setTheme(root.dataset.theme === "dark" ? "light" : "dark", true);
+  setTimeout(() => root.classList.remove("theme-fade"), 600);
+};
 
 /* ============ START ============ */
 drawTabs(); drawMenu(true); drawCart();
